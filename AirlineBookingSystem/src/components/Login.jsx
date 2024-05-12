@@ -1,19 +1,20 @@
 import React, { useState } from 'react';
 import { login } from '../services/api';
-import '../App.css'; // Make sure to import the CSS file
+import '../App.css';
 
 function Login({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('passenger'); // Default role to passenger
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const response = await login(email, password);
-      onLogin(response.data);
+      const userData = await login(email, password, role);
+      onLogin(userData);
     } catch (error) {
-      console.error('Login failed', error);
-      alert('Invalid credentials');
+      console.error('Login failed:', error);
+      alert(error.response?.data?.error || 'Login failed');
     }
   };
 
@@ -27,6 +28,7 @@ function Login({ onLogin }) {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </div>
         <div>
@@ -35,7 +37,15 @@ function Login({ onLogin }) {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
+        </div>
+        <div>
+          <label>Role</label>
+          <select value={role} onChange={(e) => setRole(e.target.value)}>
+            <option value="passenger">Passenger</option>
+            <option value="admin">Admin</option>
+          </select>
         </div>
         <button type="submit">Login</button>
       </form>

@@ -11,17 +11,26 @@ function App() {
   const [user, setUser] = useState(null);
 
   const handleLogin = (userData) => {
+    console.log("User Data:", userData);
     setUser(userData);
   };
+
+  console.log("Current User:", user);
 
   return (
     <Router>
       <Navbar />
       <div className="container">
         <Routes>
-          <Route path="/login" element={!user ? <Login onLogin={handleLogin} /> : <Navigate to={user.role === 'admin' ? "/admin" : "/passenger"} />} />
-          <Route path="/admin" element={user && user.role === 'admin' ? <AdminDashboard /> : <Navigate to="/login" />} />
-          <Route path="/passenger" element={user && user.role === 'passenger' ? <PassengerDashboard /> : <Navigate to="/login" />} />
+          {!user ? (
+            <Route path="/login" element={<Login onLogin={handleLogin} />} />
+          ) : (
+            <>
+              <Route path="/" element={<Navigate to={user.role === 'admin' ? "/admin" : "/passenger"} />} />
+              <Route path="/admin" element={user.role === 'admin' ? <AdminDashboard /> : <Navigate to="/login" />} />
+              <Route path="/passenger" element={user.role === 'passenger' ? <PassengerDashboard /> : <Navigate to="/login" />} />
+            </>
+          )}
           <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </div>
@@ -31,4 +40,3 @@ function App() {
 }
 
 export default App;
-
