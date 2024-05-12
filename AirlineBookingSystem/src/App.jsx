@@ -6,32 +6,34 @@ import PassengerDashboard from './components/PassengerDashboard';
 import AdminDashboard from './components/AdminDashboard';
 import Navbar from './components/common/Navbar';
 import Footer from './components/common/Footer';
+import HandleLogin from './components/HandleLogin';
 
 function App() {
   const [user, setUser] = useState(null);
 
   const handleLogin = (userData) => {
-    console.log("User Data:", userData);
+    console.log("User Data on Login:", userData);
     setUser(userData);
   };
-
-  console.log("Current User:", user);
 
   return (
     <Router>
       <Navbar />
       <div className="container">
+        <HandleLogin user={user} />
         <Routes>
           {!user ? (
-            <Route path="/login" element={<Login onLogin={handleLogin} />} />
+            <>
+              <Route path="/login" element={<Login onLogin={handleLogin} />} />
+              <Route path="*" element={<Navigate to="/login" />} />
+            </>
           ) : (
             <>
-              <Route path="/" element={<Navigate to={user.role === 'admin' ? "/admin" : "/passenger"} />} />
-              <Route path="/admin" element={user.role === 'admin' ? <AdminDashboard /> : <Navigate to="/login" />} />
-              <Route path="/passenger" element={user.role === 'passenger' ? <PassengerDashboard /> : <Navigate to="/login" />} />
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/passenger" element={<PassengerDashboard />} />
+              <Route path="*" element={<Navigate to={user.role === 'admin' ? "/admin" : "/passenger"} />} />
             </>
           )}
-          <Route path="*" element={<Navigate to="/login" />} />
         </Routes>
       </div>
       <Footer />

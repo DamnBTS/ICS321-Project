@@ -5,12 +5,12 @@ import '../App.css';
 function Login({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('passenger'); // Default role to passenger
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const userData = await login(email, password, role);
+      const userData = await login(email, password);
+      console.log("Logged in user data:", userData); // Debugging log
       onLogin(userData);
     } catch (error) {
       console.error('Login failed:', error);
@@ -40,13 +40,6 @@ function Login({ onLogin }) {
             required
           />
         </div>
-        <div>
-          <label>Role</label>
-          <select value={role} onChange={(e) => setRole(e.target.value)}>
-            <option value="passenger">Passenger</option>
-            <option value="admin">Admin</option>
-          </select>
-        </div>
         <button type="submit">Login</button>
       </form>
     </div>
@@ -54,4 +47,3 @@ function Login({ onLogin }) {
 }
 
 export default Login;
-
