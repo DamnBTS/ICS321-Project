@@ -92,7 +92,7 @@ function PassengerDashboard() {
   };
 
   return (
-    <div>
+    <div className="container">
       <h2>Passenger Dashboard</h2>
       <div>
         <h3>Search Flights</h3>

@@ -1,13 +1,17 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-function Navbar() {
+function Navbar({ user, onLogout }) {
   return (
     <nav>
       <ul>
         <li><Link to="/">Home</Link></li>
-        <li><Link to="/admin">Admin</Link></li>
-        <li><Link to="/passenger">Passenger</Link></li>
+        {!user && <li><Link to="/login">Login</Link></li>}
+        {user && (
+          <li>
+            <button onClick={onLogout}>Logout</button>
+          </li>
+        )}
       </ul>
     </nav>
   );

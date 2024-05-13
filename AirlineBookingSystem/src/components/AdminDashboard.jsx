@@ -117,7 +117,7 @@ function AdminDashboard() {
   }, [reportDate, flightId]);
 
   return (
-    <div>
+    <div className="container">
       <h2>Admin Dashboard</h2>
       <div>
         <h3>Add Ticket</h3>
